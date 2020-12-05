@@ -15,7 +15,7 @@ def get_authenticity_token():
     str = r'IUeayU+ssi9HBLt4tdt0tjoPjn8DyzReJEO7UAiN7/X0VGIYzvVm7BkwwC52XZ64Ua5+Q9D4HUAfT6RK7fv+ng=='
     return str
 
-# 模拟登陆INaturalist，用于获取两个token与cookie
+# 模拟登陆INaturalist，用于获取token与cookie
 # 待定
 
 # 设置创建的时间段、需要包含的字段信息，1代表选择，0代表不选择
