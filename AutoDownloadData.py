@@ -6,13 +6,13 @@ import time
 # 设置用户的cookie，可以从浏览器中获取
 def get_cookies():
     # str需要替换成自己账号的cookies，获取步骤详看图片指引
-    str = r'_ga=GA1.2.1968770663.1604718472; remember_user_token=BAhbCFsGaQMoRjpJIhlTTWtuLXlYeFdoTW9zVld6YTRUeAY6BkVGSSIXMTYwNDgwMDgwMi4yMDM1NjY2BjsARg%3D%3D--0c5ad66378bb211f74edfba7862588e90ba9aa4d; _inaturalist_session=3a7b51ad995c3a308fa0883192892d22; _gid=GA1.2.1844188603.1605194550'
+    str = r''
     return str
 
 # 设置用户的权限token，可以从浏览器中获取
 def get_authenticity_token():
     # str需要替换成自己账号的authenticity_token，获取步骤详看图片指引
-    str = r'IUeayU+ssi9HBLt4tdt0tjoPjn8DyzReJEO7UAiN7/X0VGIYzvVm7BkwwC52XZ64Ua5+Q9D4HUAfT6RK7fv+ng=='
+    str = r''
     return str
 
 # 模拟登陆INaturalist，用于获取token与cookie
