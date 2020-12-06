@@ -19,7 +19,7 @@ def get_authenticity_token():
 # 待定
 
 # 设置创建的时间段、需要包含的字段信息，1代表选择，0代表不选择
-# 输入参数：d1(起始日期),d2(终止日期)
+# 输入参数：requests创建的session(网络会话),d1(起始日期),d2(终止日期)
 def get_form_data(d1, d2):
     data = {
         'utf8': '✓',
@@ -95,7 +95,7 @@ def get_form_data(d1, d2):
     return data
 
 # 通过get方法进行查询，并返回response
-# 输入参数：访问的url
+# 输入参数：requests创建的session(网络会话),访问的url
 def get_method(session, url):
     # 添加请求头
     headers = {
@@ -116,7 +116,7 @@ def get_method(session, url):
     return resp
 
 # 通过post方法进行提交，并返回response
-# 输入参数：访问的url、表单数据(目前为固定内容)
+# 输入参数：requests创建的session(网络会话),访问的url、表单数据(目前为固定内容)
 def post_method(session, url, headers, data):
     resp = None
     session.headers = headers
@@ -130,7 +130,7 @@ def post_method(session, url, headers, data):
     return resp
 
 # 用于查询指定日期内有多少条记录
-# 输入参数：d1(起始日期),d2(终止日期)
+# 输入参数：requests创建的session(网络会话),d1(起始日期),d2(终止日期)
 # 返回内容：时间段中的记录条数
 def check_data_count_during_date(session, d1, d2):
     url_str = r'https://www.inaturalist.org/observations?quality_grade=any&identifications=any&d1=' + d1 + '&d2=' + d2 + '&partial=cached_component'
@@ -139,7 +139,7 @@ def check_data_count_during_date(session, d1, d2):
     return int(resp.headers.get('X-Total-Entries'))
 
 # 发送打包数据的任务
-# 输入参数：d1(起始日期),d2(终止日期)
+# 输入参数：requests创建的session(网络会话),d1(起始日期),d2(终止日期)
 # 返回内容：任务的id号
 def send_pack_data_proceess(session, d1, d2):
     # 添加请求头
@@ -164,7 +164,7 @@ def send_pack_data_proceess(session, d1, d2):
     return str(user_dict['id'])
 
 # 获取创建进度查询的url
-# 输入参数：任务的的id号
+# 输入参数：requests创建的session(网络会话),任务的的id号
 # 返回内容：output中的id和file_file_name
 def check_proceess(session, projectId):
     url_str = r'https://www.inaturalist.org/flow_tasks/' + projectId + r'/run.json'
@@ -178,7 +178,7 @@ def check_proceess(session, projectId):
     else:
         return {'id': 'null', 'file_file_name': 'null'}
 
-# 下载数据，需要提供下载id号和文件名称
+# 下载数据，需要requests创建的session(网络会话),提供下载id号和文件名称
 def download_zip(session, id, file_file_name, save_path, chunk_size=128) -> bool:
     str_url = r'https://www.inaturalist.org/attachments/flow_task_outputs/' + id + '/' + file_file_name
     resp = None
@@ -271,7 +271,7 @@ if __name__ == '__main__':
         # 如果单天的数据量超过20w，则跳过当天数据的下载
         if (day_interval < 0):
             # 更新时间段
-            day_interval = 6
+            day_interval = init_data_interval
             start_day = get_date(stop_day, 1)  # 起始日期为上次结束日期的下一天
             stop_day = get_date(start_day, day_interval)
             continue
@@ -300,7 +300,7 @@ if __name__ == '__main__':
         time.sleep(30)  # 删除操作后，停顿30秒后继续下一个任务
         print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ' 下载结束，开始新任务... ')
         # 更新时间段
-        day_interval = 6
+        day_interval = init_data_interval
         start_day = get_date(stop_day, 1) #起始日期为上次结束日期的下一天
         stop_day = get_date(start_day, day_interval)
     m_session.close() # 结束网络会话连接
